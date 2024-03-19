@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fish Weight Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+        }
+        form {
+            margin: 0 auto;
+            width: 300px;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h2>Fish Weight Prediction</h2>
+    <form id="fishForm">
+        <input type="text" id="length" placeholder="Length" required><br>
+        <input type="text" id="height" placeholder="Height" required><br>
+        <input type="text" id="width" placeholder="Width" required><br>
+        <select id="species" required>
+            <option value="" disabled selected>Select Species</option>
+            <option value="Bream">Bream</option>
+            <option value="Roach">Roach</option>
+            <option value="Whitefish">Whitefish</option>
+            <option value="Parkki">Parkki</option>
+            <option value="Perch">Perch</option>
+            <option value="Pike">Pike</option>
+            <option value="Smelt">Smelt</option>
+        </select><br>
+        <input type="submit" value="Predict Weight">
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById("fishForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+            fetch("/predict", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(result => {
+                document.getElementById("result").innerText = "Predicted Weight: " + result + " grams";
+            });
+        });
+    </script>
+</body>
+</html>
